@@ -1,4 +1,4 @@
-package com.grimlytwisted.library.function.parser;
+package function.parser;
 
 import java.util.stream.Stream;
 

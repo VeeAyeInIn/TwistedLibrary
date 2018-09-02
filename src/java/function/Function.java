@@ -1,4 +1,4 @@
-package com.grimlytwisted.library.function;
+package function;
 
 /**
  * Simplest function form. Provides an input type and an output type.

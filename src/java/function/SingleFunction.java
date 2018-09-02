@@ -1,4 +1,4 @@
-package com.grimlytwisted.library.function;
+package function;
 
 /**
  * Creates a Function using a singular type, unlike {@link Function},

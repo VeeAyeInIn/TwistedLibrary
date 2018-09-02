@@ -1,6 +1,6 @@
-package com.grimlytwisted.library.function.parser;
+package function.parser;
 
-import com.grimlytwisted.library.function.SingleFunction;
+import function.SingleFunction;
 
 /**
  * Functional Interface for Parsing Data.
