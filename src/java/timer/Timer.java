@@ -1,41 +1,58 @@
 package timer;
 
+import function.ThreadFunction;
 import org.apache.commons.lang3.Validate;
 
 import java.util.concurrent.TimeUnit;
 
-public abstract class Timer extends Thread {
+public class Timer extends Thread {
 
-	public Timer(long millis) throws InterruptedException {
-		loop(this, millis, 1);
+	private final ThreadFunction function;
+	private final long millis;
+	private final long loops;
+
+	public Timer(ThreadFunction function, long millis) {
+		this.function = function;
+		this.millis = millis;
+		this.loops = 1;
 	}
 
-	public Timer(long millis, long loops) throws InterruptedException {
-		loop(this, millis, loops);
+	public Timer(ThreadFunction function, long millis, long loops) {
+		this.function = function;
+		this.millis = millis;
+		this.loops = loops;
 	}
 
-	public Timer(TimeUnit unit, long duration) throws InterruptedException {
-		loop(this, unit.toMillis(duration), 1);
+	public Timer(ThreadFunction function, TimeUnit unit, long duration) {
+		this.function = function;
+		this.millis = unit.toMillis(duration);
+		this.loops = 1;
 	}
 
-	public Timer(TimeUnit unit, long duration, long loops) throws InterruptedException {
-		loop(this, unit.toMillis(duration), loops);
+	public Timer(ThreadFunction function, TimeUnit unit, long duration, long loops) {
+		this.function = function;
+		this.millis = unit.toMillis(duration);
+		this.loops = loops;
 	}
 
-	private static void loop(Thread thread, long millis, long loops) throws InterruptedException {
+	private void loop(Thread thread, long millis, long loops) throws InterruptedException {
 
 		Validate.notNull(thread, "Thread cannot be null");
 		Validate.isTrue(millis > 0, "Millis cannot be less than or equal to 0");
 		Validate.isTrue(loops > 0, "Loops cannot be less than or equal to 0");
 
-		loops--;
 		while (loops > 0) {
 			sleep(millis);
-			thread.run();
+			function.run(this);
 			loops--;
 		}
-		sleep(millis);
 	}
 
-	public abstract void run();
+	public void run() {
+		try {
+			loop(this, millis, loops);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }

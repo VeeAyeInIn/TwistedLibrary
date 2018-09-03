@@ -50,7 +50,7 @@ public class Vector<T extends Number> {
 		Objects.requireNonNull(x, "Number cannot be null.");
 		Objects.requireNonNull(y, "Number cannot be null.");
 		Objects.requireNonNull(z, "Number cannot be null.");
-		Objects.requireNonNull(function, "SingleFunction cannot be null.");
+		Objects.requireNonNull(function, "PrimaryFunction cannot be null.");
 
 		this.x = x;
 		this.y = y;
@@ -131,7 +131,7 @@ public class Vector<T extends Number> {
 	 * @param function the function
 	 */
 	public void setFunction(BinaryOperator<T> function) {
-		Objects.requireNonNull(function, "SingleFunction cannot be null.");
+		Objects.requireNonNull(function, "PrimaryFunction cannot be null.");
 		this.function = function;
 	}
 
@@ -149,7 +149,7 @@ public class Vector<T extends Number> {
 		Objects.requireNonNull(offsetX, "Offset cannot be null.");
 		Objects.requireNonNull(offsetY, "Offset cannot be null.");
 		Objects.requireNonNull(offsetZ, "Offset cannot be null.");
-		Objects.requireNonNull(function, "SingleFunction cannot be null.");
+		Objects.requireNonNull(function, "PrimaryFunction cannot be null.");
 
 		this.setX(function.apply(getX(), offsetX));
 		this.setY(function.apply(getY(), offsetY));

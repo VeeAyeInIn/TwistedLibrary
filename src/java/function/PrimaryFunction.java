@@ -1,7 +1,7 @@
 package function;
 
 /**
- * Creates a Function using a singular type, unlike {@link Function},
+ * Creates a ResultantFunction using a singular type, unlike {@link ResultantFunction},
  * where it takes in an input, and output type.
  *
  * @param <T> the parameter type, of both the argument, and resultant
@@ -9,7 +9,7 @@ package function;
  * @author GrimlyTwisted
  */
 @FunctionalInterface
-public interface SingleFunction<T> extends Function<T, T> {
+public interface PrimaryFunction<T> extends ResultantFunction<T, T> {
 
 	@Override
 	T run(T argument);

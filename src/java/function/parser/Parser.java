@@ -1,6 +1,6 @@
 package function.parser;
 
-import function.SingleFunction;
+import function.PrimaryFunction;
 
 /**
  * Functional Interface for Parsing Data.
@@ -21,7 +21,7 @@ import function.SingleFunction;
  * @author GrimlyTwisted
  */
 @FunctionalInterface
-public interface Parser extends SingleFunction<String> {
+public interface Parser extends PrimaryFunction<String> {
 
 	/**
 	 * Parses strings sent through the parameter.
