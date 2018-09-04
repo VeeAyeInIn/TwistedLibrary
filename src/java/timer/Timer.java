@@ -1,58 +1,41 @@
 package timer;
 
-import function.ThreadFunction;
-import org.apache.commons.lang3.Validate;
-
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Timer extends Thread {
 
-	private final ThreadFunction function;
-	private final long millis;
+	private final ScheduledExecutorService scheduler;
+	private final ExecutorService service;
+	private final Runnable runnable;
+
+	private final long milliseconds;
 	private final long loops;
 
-	public Timer(ThreadFunction function, long millis) {
-		this.function = function;
-		this.millis = millis;
-		this.loops = 1;
-	}
-
-	public Timer(ThreadFunction function, long millis, long loops) {
-		this.function = function;
-		this.millis = millis;
+	public Timer(Runnable runnable, long milliseconds, long loops) {
+		this.runnable = runnable;
+		this.milliseconds = milliseconds;
 		this.loops = loops;
+
+		service = Executors.newFixedThreadPool(1);
+		scheduler = Executors.newScheduledThreadPool(1);
 	}
 
-	public Timer(ThreadFunction function, TimeUnit unit, long duration) {
-		this.function = function;
-		this.millis = unit.toMillis(duration);
-		this.loops = 1;
-	}
-
-	public Timer(ThreadFunction function, TimeUnit unit, long duration, long loops) {
-		this.function = function;
-		this.millis = unit.toMillis(duration);
-		this.loops = loops;
-	}
-
-	private void loop(Thread thread, long millis, long loops) throws InterruptedException {
-
-		Validate.notNull(thread, "Thread cannot be null");
-		Validate.isTrue(millis > 0, "Millis cannot be less than or equal to 0");
-		Validate.isTrue(loops > 0, "Loops cannot be less than or equal to 0");
-
-		while (loops > 0) {
-			sleep(millis);
-			function.run(this);
-			loops--;
+	public Future<?> runSynchronously() throws InterruptedException {
+		synchronized (service) {
+			Future<?> future = null;
+			for (int i = 0; i < loops; i++) {
+				service.wait(milliseconds);
+				future = service.submit(runnable);
+			}
+			return future;
 		}
 	}
 
-	public void run() {
-		try {
-			loop(this, millis, loops);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public ScheduledFuture<?> runAsynchronously() {
+		ScheduledFuture<?> future = null;
+		for (int i = 0; i < loops; i++) {
+			future = scheduler.schedule(runnable, milliseconds * (i + 1), TimeUnit.MILLISECONDS);
 		}
+		return future;
 	}
 }
