@@ -2,7 +2,7 @@ package timer;
 
 import java.util.concurrent.*;
 
-public class Timer extends Thread {
+public class Timer {
 
 	private final ScheduledExecutorService scheduler;
 	private final ExecutorService service;
