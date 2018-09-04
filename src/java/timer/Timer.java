@@ -1,6 +1,5 @@
 package timer;
 
-import function.ThreadFunction;
 import org.apache.commons.lang3.Validate;
 
 import java.util.concurrent.TimeUnit;
@@ -8,30 +7,30 @@ import java.util.concurrent.TimeUnit;
 public class Timer extends Thread {
 
     private final Thread thread = new Thread(this);
-    private final ThreadFunction function;
+    private final Runnable runnable;
     private final long millis;
     private final long loops;
 
-    public Timer(ThreadFunction function, long millis) {
-        this.function = function;
+    public Timer(Runnable runnable, long millis) {
+        this.runnable = runnable;
         this.millis = millis;
         this.loops = 1;
     }
 
-    public Timer(ThreadFunction function, long millis, long loops) {
-        this.function = function;
+    public Timer(Runnable runnable, long millis, long loops) {
+        this.runnable = runnable;
         this.millis = millis;
         this.loops = loops;
     }
 
-    public Timer(ThreadFunction function, TimeUnit unit, long duration) {
-        this.function = function;
+    public Timer(Runnable runnable, TimeUnit unit, long duration) {
+        this.runnable = runnable;
         this.millis = unit.toMillis(duration);
         this.loops = 1;
     }
 
-    public Timer(ThreadFunction function, TimeUnit unit, long duration, long loops) {
-        this.function = function;
+    public Timer(Runnable runnable, TimeUnit unit, long duration, long loops) {
+        this.runnable = runnable;
         this.millis = unit.toMillis(duration);
         this.loops = loops;
     }
@@ -44,7 +43,7 @@ public class Timer extends Thread {
 
         while (loops > 0) {
             sleep(millis);
-            function.execute(thread);
+            runnable.run();
             loops--;
         }
     }
